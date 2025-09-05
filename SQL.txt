@@ -1,0 +1,36 @@
+Urutan Setup di cPanel
+
+Buat Database
+
+Login ke cPanel → MySQL Database.
+
+Buat database indopass_db.
+
+Buat user indopass_user + password.
+
+Assign user ke database dengan hak ALL PRIVILEGES.
+
+Import SQL
+
+Buka phpMyAdmin → Import → upload SQL berikut:
+
+CREATE TABLE packages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  region VARCHAR(100),
+  days INT,
+  price DECIMAL(12,2),
+  image VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) UNIQUE,
+  password VARCHAR(255),
+  role ENUM('admin','staff') DEFAULT 'staff',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (username, password, role) 
+VALUES ('admin', MD5('admin123'), 'admin');

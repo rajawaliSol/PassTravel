@@ -1,0 +1,7 @@
+# Redirect requests for /admin to admin.indonesiapasstravel.com
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^indonesiapasstravel\.com$ [NC]
+RewriteRule ^admin/?(.*)$ http://admin.indonesiapasstravel.com/$1 [R=301,L]
+
+# Error handling
+ErrorDocument 404 /index.php

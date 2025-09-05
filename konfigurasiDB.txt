@@ -1,0 +1,37 @@
+Konfigurasi db.php
+Buat file /includes/db.php:
+
+<?php
+$host = "localhost";
+$user = "indopass_user";   // ganti sesuai user DB
+$pass = "PASSWORD_DB";     // ganti sesuai password DB
+$db   = "indopass_db";     // ganti sesuai nama DB
+
+$conn = mysqli_connect($host, $user, $pass, $db);
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
+}
+
+Upload File ke cPanel
+
+Upload file landing page (index.php, send_contact.php, /includes/, /uploads/) ke public_html/.
+
+Upload folder admin/ ke public_html/admin/.
+
+Buat subdomain admin.indonesiapasstravel.com di cPanel → arahkan ke public_html/admin/.
+
+Atur Folder Upload Gambar
+
+Buat folder /uploads/.
+
+Set permission 755 atau 775 (supaya bisa upload).
+
+Tes Fitur
+
+Buka indonesiapasstravel.com → form kontak → pastikan email masuk.
+
+Login ke admin.indonesiapasstravel.com pakai admin / admin123.
+
+Coba tambah paket + upload gambar.
+
+Kalau role staff login → hanya bisa kelola paket, tidak bisa kelola user.

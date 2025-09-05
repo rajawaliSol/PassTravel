@@ -1,0 +1,11 @@
+# About Banner Image
+
+This is a placeholder text file since we can't directly upload images through this interface.
+
+When implementing the website, please:
+
+1. Create an "uploads" directory in your website root if it doesn't already exist
+2. Place an appropriate banner image named "about-bg.jpg" in the uploads directory
+3. The image should be landscape orientation, preferably at least 1600px wide
+
+You can use the image from the provided screenshot or any other suitable image for a travel website's About page.

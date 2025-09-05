@@ -1,0 +1,18 @@
+/ (root domain → indonesiapasstravel.com)
+│── index.php              # Landing page utama
+│── send_contact.php       # Proses form kontak
+│── /uploads/              # Folder simpan gambar paket
+│
+├── /includes/
+│   ├── db.php             # Koneksi database
+│   └── /PHPMailer/        # Library PHPMailer
+│
+└── /admin/ (subdomain → admin.indonesiapasstravel.com)
+    │── index.php          # Login panel
+    │── dashboard.php      # Dashboard sesuai role
+    │── packages.php       # CRUD paket
+    │── edit.php           # Edit paket
+    │── users.php          # CRUD user (khusus admin)
+    │── logout.php         # Logout
+    │── db.php             # Koneksi database (bisa include dari /includes/db.php)
+    └── /uploads/          # (optional) kalau mau upload khusus admin
