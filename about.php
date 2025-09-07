@@ -1,80 +1,102 @@
 <?php
 include "includes/db.php";
-
-// Ambil data about us dari database
-$about_query = mysqli_query($conn, "SELECT * FROM site_content WHERE page='about' LIMIT 1");
-$about = mysqli_fetch_assoc($about_query);
-
-// Default content jika belum ada di database
-if (!$about) {
-    $title = "About Us";
-    $heading = "\"..Explore With Us..\"";
-    $content = "<p>IndonesiaPass Tours & Travel
-
-Vacations are one of life’s true luxuries — a time to relax and recharge from the stress of daily life.
-That’s why planning a vacation should be an enjoyable experience, not a burden. Finding the right travel agent can make the difference between a trip that is “just okay” and one you will remember for years. – with a focus of serving inbound travellers to Indonesia – especially to BALI. Design to accommodate the service inbound Domestic and Asian Market (B2B, B2C, FIT and GIT) deliver the best service with competitive prices.</p>
-    <p></p>
-    <p>IndonesiaPass Tours & Travel</p>
-    <p>\".. Explore With Us..\"</p>";
-    $image = "about-bg.jpg"; // Default image
+function get_section($section) {
+  global $conn;
+  $q = mysqli_query($conn, "SELECT * FROM site_content WHERE page='about' AND section='$section' LIMIT 1");
+  if ($q === false) {
+    return null;
+  }
+  return mysqli_fetch_assoc($q);
 }
-else {
-    $title = $about['title'];
-    $heading = $about['heading'];
-    $content = $about['content'];
-    $image = $about['image'] ?: "about-bg.jpg";
-}
+$hero = get_section('hero');
+$profile = get_section('profile');
+$vision = get_section('vision');
+$value = get_section('value');
+$team = get_section('team');
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title><?php echo htmlspecialchars($title); ?> - Indonesia Pass Travel</title>
+  <title><?php echo htmlspecialchars($hero['title'] ?? 'About Us'); ?> - Indonesia Pass Travel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html, input, select, textarea, button {
+      font-family: 'Inter', Arial, sans-serif !important;
+    }
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-<!-- NAV -->
-<header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b">
+<!-- NAVBAR SAMA DENGAN index.php -->
+<header class="sticky top-0 z-40 shadow border-b" style="background-color: #000000ff; border-color: #1e293b; color: #fff;">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <div class="p-2 rounded-2xl shadow bg-blue-700 text-white">🎫</div>
+      <div class="p-2 rounded-2xl shadow" style="background-color: #000000ff; color: #fff;">🎫</div>
       <span class="font-extrabold tracking-tight text-lg">Indonesia Pass Travel</span>
     </div>
     <div class="hidden md:flex items-center gap-6 text-sm">
-      <a href="index.php" class="hover:text-gray-900">Home</a>
-      <a href="about.php" class="hover:text-gray-900 font-bold">About Us</a>
-      <a href="#contact" class="hover:text-gray-900">Kontak</a>
-      <a href="index.php#passes" class="bg-blue-600 text-white px-4 py-2 rounded-2xl">Lihat Paket</a>
+      <a href="/index.php" style="color: #ffffffff;" onmouseover="this.style.color='#1d4ed8'" onmouseout="this.style.color='#ffffffff'">Home</a>
+      <a href="/package.php" style="color: #ffffffff;" onmouseover="this.style.color='#1d4ed8'" onmouseout="this.style.color='#ffffffff'">Tours Package</a>
+      <a href="#passes"
+         style="background-color: #fff; color: #1d4ed8; padding: 0.5rem 1rem; border-radius: 1rem; font-weight: bold; transition: all 0.2s;"
+         onmouseover="this.style.backgroundColor='#fde047';this.style.color='#1e293b'"
+         onmouseout="this.style.backgroundColor='#fff';this.style.color='#1d4ed8'">
+         Start Planning
+      </a>
     </div>
   </div>
 </header>
 
-<!-- HERO BANNER WITH OVERLAY -->
-<section class="relative">
-  <div class="w-full h-96 overflow-hidden relative">
-    <img src="uploads/<?php echo htmlspecialchars($image); ?>" alt="About Us Banner" class="w-full h-full object-cover">
-    <div class="absolute inset-0 bg-red-500/60 flex items-center justify-center">
-      <h1 class="text-5xl md:text-6xl font-extrabold text-white"><?php echo htmlspecialchars($title); ?></h1>
-    </div>
+<!-- HERO -->
+<section class="relative h-80 flex items-center justify-center">
+  <?php if(!empty($hero['image'])): ?>
+    <img src="public_html/images/<?php echo htmlspecialchars($hero['image']); ?>" class="absolute inset-0 w-full h-full object-cover -z-10">
+    <div class="bg-black/50 absolute inset-0 -z-10"></div>
+  <?php endif; ?>
+  <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow"><?php echo htmlspecialchars($hero['title'] ?? 'About Us'); ?></h1>
+</section>
+
+<!-- PROFILE/SEJARAH -->
+<section class="max-w-5xl mx-auto py-12 px-4">
+  <h2 class="text-2xl font-bold mb-4"><?php echo htmlspecialchars($profile['title'] ?? 'Profil'); ?></h2>
+  <div class="grid md:grid-cols-2 gap-8 items-center">
+    <?php if(!empty($profile['image'])): ?>
+      <div>
+        <img src="public_html/images/<?php echo htmlspecialchars($profile['image']); ?>" class="rounded-xl shadow w-full max-w-md mx-auto">
+      </div>
+    <?php endif; ?>
+    <div class="prose max-w-none"><?php echo $profile['content'] ?? ''; ?></div>
   </div>
 </section>
 
-<!-- TAGLINE -->
-<section class="max-w-5xl mx-auto py-12 px-4">
-  <h2 class="text-3xl md:text-4xl font-bold text-center border-b-2 border-red-500 pb-4 mb-8 inline-block mx-auto">
-    <?php echo htmlspecialchars($heading); ?>
-  </h2>
-  
-  <div class="grid md:grid-cols-2 gap-8 items-center">
-    <div>
-      <img src="uploads/company-logo.png" alt="Company Logo" class="w-full max-w-md mx-auto">
-    </div>
-    
-    <div class="prose prose-lg max-w-none">
-      <?php echo $content; ?>
-    </div>
+<!-- VISI MISI -->
+<section class="max-w-5xl mx-auto py-8 px-4">
+  <h2 class="text-2xl font-bold mb-4"><?php echo htmlspecialchars($vision['title'] ?? 'Visi Misi'); ?></h2>
+  <div class="prose max-w-none"><?php echo $vision['content'] ?? ''; ?></div>
+</section>
+
+<!-- VALUE -->
+<section class="max-w-5xl mx-auto py-8 px-4">
+  <h2 class="text-2xl font-bold mb-4"><?php echo htmlspecialchars($value['title'] ?? 'Nilai'); ?></h2>
+  <div class="prose max-w-none"><?php echo $value['content'] ?? ''; ?></div>
+</section>
+
+<!-- TEAM -->
+<section class="max-w-5xl mx-auto py-8 px-4">
+  <h2 class="text-2xl font-bold mb-4"><?php echo htmlspecialchars($team['title'] ?? 'Tim Kami'); ?></h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    <?php if(!empty($team['image'])): ?>
+      <div>
+        <img src="public_html/images/<?php echo htmlspecialchars($team['image']); ?>" class="rounded-full w-32 h-32 object-cover mx-auto mb-2">
+        <div class="text-center"><?php echo $team['content'] ?? ''; ?></div>
+      </div>
+    <?php else: ?>
+      <div class="text-center md:col-span-3"><?php echo $team['content'] ?? ''; ?></div>
+    <?php endif; ?>
   </div>
 </section>
 
@@ -100,7 +122,7 @@ else {
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER SAMA DENGAN index.php -->
 <footer class="bg-gray-900 text-gray-200 py-6 px-4">
   <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-6">
     <div>
